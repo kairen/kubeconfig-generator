@@ -1,0 +1,13 @@
+
+[[constraint]]
+  name = "github.com/gin-gonic/gin"
+  branch = "master"
+
+[[constraint]]
+  name = "gopkg.in/ldap.v2"
+  version = "v2.5.1"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "0.0.3"
+
