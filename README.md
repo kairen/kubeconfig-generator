@@ -1,4 +1,4 @@
-[![Docker Build Status](https://img.shields.io/docker/build/inwinstack/kubeconfig-generator.svg)](https://hub.docker.com/r/inwinstack/kubeconfig-generator/)
+[![Build Status](https://travis-ci.org/inwinstack/kubeconfig-generator.svg?branch=master)](https://travis-ci.org/inwinstack/kubeconfig-generator) [![Docker Build Status](https://img.shields.io/docker/build/inwinstack/kubeconfig-generator.svg)](https://hub.docker.com/r/inwinstack/kubeconfig-generator/)
 # Kubeconfig Generator
 Kubeconfig Generator is a tool to generate kubeconfig for LDAP, Keystone, ..., etc webhook.
 
