@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var VersionCmd = &cobra.Command{
+var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the version number of client.",
 	RunE: func(cmd *cobra.Command, args []string) error {

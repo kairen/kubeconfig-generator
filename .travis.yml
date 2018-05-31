@@ -1,0 +1,12 @@
+language: go
+os: linux
+sudo: required
+go:
+  - 1.10.x
+go_import_path: github.com/inwinstack/kubeconfig-generator
+
+install:
+  - go get -u github.com/golang/dep/cmd/dep
+script:
+  - dep ensure
+  - make

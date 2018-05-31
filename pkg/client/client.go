@@ -23,27 +23,33 @@ const (
 	expectTimeout    = 1 * time.Second
 )
 
-type Client struct {
-	httpClient *http.Client
-	url        string
-	user       *types.User
+type Flags struct {
+	URL      string
+	DN       string
+	Password string
 }
 
-func NewClient(url, dn, password string) *Client {
-	c := &Client{url: url, user: &types.User{DN: dn, Password: password}}
-	c.httpClient = &http.Client{
-		Timeout: timeout,
-		Transport: &http.Transport{
-			Dial: (&net.Dialer{
-				Timeout:   dialTimeout,
-				KeepAlive: keepaliveTimeout,
-			}).Dial,
-			TLSHandshakeTimeout:   handshakeTimeout,
-			ResponseHeaderTimeout: responseTimeout,
-			ExpectContinueTimeout: expectTimeout,
+type Client struct {
+	httpClient *http.Client
+	flags      *Flags
+}
+
+func NewClient(flags Flags) *Client {
+	return &Client{
+		flags: &flags,
+		httpClient: &http.Client{
+			Timeout: timeout,
+			Transport: &http.Transport{
+				Dial: (&net.Dialer{
+					Timeout:   dialTimeout,
+					KeepAlive: keepaliveTimeout,
+				}).Dial,
+				TLSHandshakeTimeout:   handshakeTimeout,
+				ResponseHeaderTimeout: responseTimeout,
+				ExpectContinueTimeout: expectTimeout,
+			},
 		},
 	}
-	return c
 }
 
 func (c *Client) GenerateKubeconfig(path string) error {
@@ -54,20 +60,32 @@ func (c *Client) GenerateKubeconfig(path string) error {
 	if err := kubeconfig.Generate(g, path); err != nil {
 		return err
 	}
-	fmt.Printf("Generate the Kubernetes config to `%s` path.\n", path)
 	return nil
 }
 
 func (c *Client) login() (*types.Generator, error) {
-	buff := new(bytes.Buffer)
-	json.NewEncoder(buff).Encode(c.user)
-
-	if _, err := url.Parse(c.url); err != nil {
+	u := &types.User{DN: c.flags.DN, Password: c.flags.Password}
+	b, err := c.post("/login", u)
+	if err != nil {
 		return nil, err
 	}
 
-	newURL := fmt.Sprintf("%s/login", c.url)
-	req, err := http.NewRequest("POST", newURL, buff)
+	var g types.Generator
+	if err := json.Unmarshal(b, &g); err != nil {
+		return nil, err
+	}
+	return &g, nil
+}
+
+func (c *Client) post(path string, body interface{}) ([]byte, error) {
+	buff := new(bytes.Buffer)
+	json.NewEncoder(buff).Encode(body)
+
+	if _, err := url.Parse(c.flags.URL); err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s%s", c.flags.URL, path), buff)
 	req.Header.Set("Content-Type", "application/json")
 	if err != nil {
 		return nil, err
@@ -79,14 +97,13 @@ func (c *Client) login() (*types.Generator, error) {
 	}
 	defer r.Body.Close()
 
-	var g types.Generator
-	b, _ := ioutil.ReadAll(r.Body)
-	if err := json.Unmarshal(b, &g); err != nil {
+	b, err := ioutil.ReadAll(r.Body)
+	if err != nil {
 		return nil, err
 	}
 
-	if r.StatusCode != 200 {
-		return nil, fmt.Errorf("the status is \"%s\"", g.Status)
+	if r.StatusCode == http.StatusUnauthorized || r.StatusCode == http.StatusBadRequest {
+		return nil, fmt.Errorf("%s", http.StatusText(r.StatusCode))
 	}
-	return &g, nil
+	return b, nil
 }

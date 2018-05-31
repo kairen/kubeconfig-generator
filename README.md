@@ -1,8 +1,20 @@
 [![Docker Build Status](https://img.shields.io/docker/build/inwinstack/kubeconfig-generator.svg)](https://hub.docker.com/r/inwinstack/kubeconfig-generator/)
 # Kubeconfig Generator
-A server to generate kubeconfig of the user by LDAP query token.
+Kubeconfig Generator is a tool to generate kubeconfig for LDAP, Keystone, ..., etc webhook.
 
-# Quick Start
+Now support webhook as below:
+* [x] LDAP Webhook.
+* [ ] Keystone Webhook. 
+
+## Building from Source
+Clone into your go path under `$GOPATH/src/github.com/inwinstack`:
+```sh
+$ git clone https://github.com/inwinstack/kubeconfig-generator.git $GOPATH/src/github.com/inwinstack/kubeconfig-generator.git
+$ cd $GOPATH/src/github.com/inwinstack/kubeconfig-generator.git
+$ make
+```
+
+## Quick Start
 In this first, modified the `deploy/ldap-generator-server-dp.yml` file to match our LDAP and Kubernetes API server endpoint:
 ```yml
 # container args
@@ -21,4 +33,17 @@ spec:
 And then apply to Kubernetes cluster:
 ```sh
 $ kubectl apply -f deploy/
+```
+
+To generate the config using kgctl:
+```sh
+$ kgctl ldap --url http://172.22.132.40:32400 \
+    --dn "uid=user1,ou=People,dc=k8s,dc=com" \
+    --password "user1" \
+    -o test.conf
+# output
+Generate the Kubernetes config to `test.conf`.
+
+$ export KUBECONFIG=test.conf
+$ kubectl -n user1 get po
 ```
