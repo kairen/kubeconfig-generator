@@ -15,7 +15,7 @@ var (
 	ldapAddr string
 )
 
-var ServeCmd = &cobra.Command{
+var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Serve the generator server.",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -28,10 +28,9 @@ var ServeCmd = &cobra.Command{
 }
 
 func init() {
-	ServeCmd.Flags().StringVarP(&listen, "listen", "", ":8080", "Server serve address.")
-	ServeCmd.Flags().StringVarP(&endpoint, "kube-apiserver-endpoint", "", "", "Kubernetes API server external endpoint.")
-	ServeCmd.Flags().StringVarP(&caPath, "ca-path", "", "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt", "Kubernetes API server certificate.")
-	ServeCmd.Flags().StringVarP(&ldapAddr, "ldap-address", "", "", "LDAP server address.")
-	ServeCmd.MarkFlagRequired("kube-apiserver-endpoint")
-	ServeCmd.MarkFlagRequired("ldap-address")
+	serveCmd.Flags().StringVarP(&listen, "listen", "", ":8080", "Server serve address.")
+	serveCmd.Flags().StringVarP(&endpoint, "kube-apiserver-endpoint", "", "", "Kubernetes API server external endpoint.")
+	serveCmd.Flags().StringVarP(&caPath, "ca-path", "", "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt", "Kubernetes API server certificate.")
+	serveCmd.Flags().StringVarP(&ldapAddr, "ldap-address", "", "", "LDAP server address.")
+	serveCmd.MarkFlagRequired("kube-apiserver-endpoint")
 }
