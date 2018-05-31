@@ -40,12 +40,12 @@ func (s *Server) Serve() error {
 	s.router.POST("/login", func(c *gin.Context) {
 		var user types.User
 		if err := c.ShouldBindJSON(&user); err == nil {
-			user, qerr := ldap.QueryLdapUserInfo(s.ldapAddr, user.DN, user.Password)
+			ldapUser, qerr := ldap.QueryLdapUserInfo(s.ldapAddr, user.DN, user.Password)
 			ca, caerr := util.LoadBase64CertificateAuthority(s.caPath)
-			if user != nil && qerr == nil && caerr == nil {
+			if ldapUser != nil && qerr == nil && caerr == nil {
 				c.JSON(http.StatusOK, types.Generator{
-					UserName: user.Name,
-					Token:    user.KubernetesToken,
+					UserName: ldapUser.Name,
+					Token:    ldapUser.KubernetesToken,
 					CA:       ca,
 					Endpoint: s.apiURL,
 					Status:   types.Authorized,
