@@ -9,7 +9,7 @@
             A file that is used to configure access to a cluster is sometimes called a kubeconfig file. This is a generic way of referring to configuration files. It does not mean that there is a file named kubeconfig.
           </v-alert>
           <div class="subheading my-3">
-            <span>Your kubeconfig yaml or </span>
+            <span>Your kubeconfig or </span>
             <a v-on:click="download">download</a>
             <span> it.</span>
           </div>
@@ -27,18 +27,18 @@
                       <span v-if="step.title" class="subheading" :key="step.title">{{ step.title }}</span>
                       <markup v-if="kubeconfig && step.cmd" :lang="item.lang" :key="step.cmd">{{ step.cmd }}</markup>
                     </template>
-                    <div class="body-1">
-                      <span>For more details of install kubectl, please see </span>
-                      <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">
-                        Install and Set Up kubectl
-                      </a>
-                      <span>.</span>
-                    </div>
                   </v-card-text>
                 </v-card>
               </v-tab-item>
             </template>
           </v-tabs>
+          <div class="body-1 mb-3">
+            <span>For more details of install kubectl, please see </span>
+            <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">
+              Install and Set Up kubectl
+            </a>
+            <span>.</span>
+          </div>
 
           <span class="headline">Using</span>
           <v-divider class="my-3"></v-divider>
@@ -74,7 +74,7 @@ const cmd = {
   },
   windows: {
     curl: [
-      '$ curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.10.3/bin/windows/amd64/kubectl.exe'
+      'curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.10.3/bin/windows/amd64/kubectl.exe'
     ]
   },
   macOS: {
@@ -144,28 +144,23 @@ export default {
         {
           title: 'Linux',
           lang: 'cli',
-          cmd: 'kubectl get po -n <username>'
+          cmd: 'kubectl get po -n ' + this.$store.getters.username
         },
         {
           title: 'Windows',
           lang: 'cli',
-          cmd: 'kubectl get po -n <username>'
+          cmd: 'kubectl get po -n ' + this.$store.getters.username
         },
         {
           title: 'MacOS',
           lang: 'cli',
-          cmd: 'kubectl get po -n <username>'
+          cmd: 'kubectl get po -n ' + this.$store.getters.username
         }
       ]
     }
   },
-  beforeCreate () {
-    if (!this.$store.getters.dn) {
-      this.$router.go(-1)
-    }
-  },
   created () {
-    if (this.$store.getters.dn) {
+    if (this.$store.getters.username) {
       var yaml = require('js-yaml')
       var kubeconfigJson = {
         apiVersion: 'v1',
@@ -182,17 +177,17 @@ export default {
           {
             context: {
               cluster: 'kubernetes',
-              user: this.$store.getters.dn
+              user: this.$store.getters.username
             },
-            name: this.$store.getters.dn + '-context'
+            name: this.$store.getters.username + '-context'
           }
         ],
-        'current-context': this.$store.getters.dn + '-context',
+        'current-context': this.$store.getters.username + '-context',
         kind: 'Config',
         preferences: {},
         users: [
           {
-            name: this.$store.getters.dn,
+            name: this.$store.getters.username,
             user: {
               token: this.$store.getters.token
             }
@@ -207,7 +202,7 @@ export default {
     download () {
       var FileSaver = require('file-saver')
       var file = new File([this.kubeconfig], {type: ''})
-      FileSaver.saveAs(file, 'kubeconfig')
+      FileSaver.saveAs(file, 'config')
     }
   }
 }
