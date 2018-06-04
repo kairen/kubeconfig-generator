@@ -4,7 +4,7 @@ Kubeconfig Generator is a tool to generate kubeconfig for LDAP, Keystone, ..., e
 
 Now support webhook as below:
 * [x] LDAP Webhook.
-* [ ] Keystone Webhook. 
+* [ ] Keystone Webhook.
 
 ## Building from Source
 Clone into your go path under `$GOPATH/src/github.com/inwinstack`:
@@ -47,3 +47,5 @@ Generate the Kubernetes config to `test.conf`.
 $ export KUBECONFIG=test.conf
 $ kubectl -n user1 get po
 ```
+
+![web-ui](snapshots/home.png)

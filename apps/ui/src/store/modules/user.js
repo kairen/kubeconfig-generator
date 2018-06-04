@@ -4,14 +4,14 @@ import { removeUser } from '@/utils/auth'
 const user = {
   state: {
     // User Information
-    dn: '',
+    username: '',
     endpoint: '',
     ca: '',
     token: ''
   },
   mutations: {
-    SET_DN: (state, dn) => {
-      state.dn = dn
+    SET_USERNAME: (state, username) => {
+      state.username = username
     },
     SET_ENDPOINT: (state, endpoint) => {
       state.endpoint = endpoint
@@ -28,7 +28,7 @@ const user = {
       const dn = userInfo.dn.trim()
       return new Promise((resolve, reject) => {
         loginByUser(dn, userInfo.password).then(response => {
-          commit('SET_DN', response.data.username)
+          commit('SET_USERNAME', response.data.username)
           commit('SET_ENDPOINT', response.data.endpoint)
           commit('SET_CA', response.data.ca)
           commit('SET_TOKEN', response.data.token)
