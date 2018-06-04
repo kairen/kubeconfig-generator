@@ -73,7 +73,7 @@ const cmd = {
     ],
     make: [
       'chmod +x ./kubectl',
-      'sudo mv ./kubectl /user/local/bin/kubectl'
+      'sudo mv ./kubectl /usr/local/bin/kubectl'
     ]
   },
   windows: {
@@ -88,7 +88,7 @@ const cmd = {
     ],
     make: [
       'chmod +x ./kubectl',
-      'sudo mv ./kubectl /user/local/bin/kubectl'
+      'sudo mv ./kubectl /usr/local/bin/kubectl'
     ]
   }
 }
