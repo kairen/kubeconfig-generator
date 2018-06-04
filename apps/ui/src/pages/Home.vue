@@ -9,9 +9,11 @@
             A file that is used to configure access to a cluster is sometimes called a kubeconfig file. This is a generic way of referring to configuration files. It does not mean that there is a file named kubeconfig.
           </v-alert>
           <div class="subheading my-3">
-            <span>Your kubeconfig or </span>
+            <span>Copy your kubeconfig or </span>
             <a v-on:click="download">download</a>
-            <span> it.</span>
+            <span> it. And move the kubeconfig to the </span>
+            <code>$HOME/.kube</code>
+            <span>directory:</span>
           </div>
           <markup v-if="kubeconfig" :lang="'yaml'">{{ kubeconfig }}</markup>
 
@@ -46,9 +48,11 @@
             <template v-for="item in usingKCTabs">
               <v-tab :key="item.title" ripple>{{ item.title }}</v-tab>
               <v-tab-item :key="item.title">
-                <v-card-text>
-                  <markup v-if="kubeconfig && item.cmd" :lang="item.lang" :key="item.title">{{ item.cmd }}</markup>
-                </v-card-text>
+                <v-card>
+                  <v-card-text>
+                    <markup v-if="kubeconfig && item.cmd" :lang="item.lang" :key="item.title">{{ item.cmd }}</markup>
+                  </v-card-text>
+                </v-card>
               </v-tab-item>
             </template>
           </v-tabs>
