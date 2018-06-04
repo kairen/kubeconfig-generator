@@ -1,5 +1,0 @@
-out/
-deploy/
-*.crt
-*.conf
-.DS_Store

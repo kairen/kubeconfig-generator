@@ -33,7 +33,5 @@ func addCommands() {
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&output, "output", "o", "~/.kube/config", "Kubeconfig output path.")
-	rootCmd.PersistentFlags().StringVarP(&flags.URL, "url", "", "", "A server endpoint for Kubeconfig Generator.")
-
-	rootCmd.MarkPersistentFlagRequired("url")
+	rootCmd.PersistentFlags().StringVarP(&flags.URL, "url", "", "http://localhost:8080", "A server endpoint for Kubeconfig Generator.")
 }

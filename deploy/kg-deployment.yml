@@ -16,8 +16,8 @@ spec:
         app: kubeconfig-generator
     spec:
       containers:
-      - name: kubeconfig-generator-server
-        image: inwinstack/kubeconfig-generator:v0.1.0
+      - name: kg-server
+        image: inwinstack/kg-server:v0.1.0
         args:
         - serve
         - --kube-apiserver-endpoint=https://192.16.35.11:6443
@@ -29,9 +29,6 @@ spec:
           requests:
             cpu: 100m
             memory: 50Mi
-          limits:
-            cpu: 200m
-            memory: 100Mi
         readinessProbe:
           httpGet:
             path: /healthz
@@ -52,3 +49,25 @@ spec:
           timeoutSeconds: 20
         ports:
         - containerPort: 8080
+      - name: kg-ui
+        image: inwinstack/kg-ui:v0.1.0
+        resources:
+          requests:
+            cpu: 100m
+            memory: 50Mi
+        readinessProbe:
+          tcpSocket:
+            port: 9090
+          failureThreshold: 2
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 20
+        livenessProbe:
+          tcpSocket:
+            port: 9090
+          failureThreshold: 2
+          initialDelaySeconds: 15
+          periodSeconds: 15
+          timeoutSeconds: 20
+        ports:
+        - containerPort: 9090

@@ -8,7 +8,11 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
+  - name: ui
+    port: 9090
+    protocol: TCP
+  - name: api
+    port: 8080
     protocol: TCP
   selector:
     app: kubeconfig-generator
