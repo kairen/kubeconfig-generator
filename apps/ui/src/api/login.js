@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-export function loginByUser (username, password) {
+export function loginByUser (dn, password) {
   var data = {
-    dn: username,
+    dn: dn,
     password: password
   }
   return axios.post(
