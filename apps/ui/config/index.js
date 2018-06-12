@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/login': {
-        target: process.env.KG_APISERVER_URL || 'http://172.22.132.40:32664',
+        target: process.env.KG_APISERVER_URL || 'http://localhost:8080',
         changeOrigin: true,
         ws: true
       },
