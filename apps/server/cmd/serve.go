@@ -33,7 +33,7 @@ func init() {
 	serveCmd.Flags().StringVarP(&endpoint, "kube-apiserver-endpoint", "", "", "Kubernetes API server external endpoint.")
 	serveCmd.Flags().StringVarP(&caPath, "ca-path", "", "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt", "Kubernetes API server certificate.")
 	serveCmd.Flags().StringVarP(&ldapAddr, "ldap-address", "", "", "LDAP server address.")
-	serveCmd.Flags().StringVarP(&ldapDC, "ldap-dc", "", "", "LDAP Domain Componet")
+	serveCmd.Flags().StringVarP(&ldapDC, "ldap-dc", "", "", "LDAP domain componet")
 	serveCmd.MarkFlagRequired("kube-apiserver-endpoint")
-	serveCmd.MarkFlagRequired("ldapDC")
+	serveCmd.MarkFlagRequired("ldap-dc")
 }
