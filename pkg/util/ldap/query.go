@@ -17,7 +17,7 @@ type LdapUserInfo struct {
 }
 
 // QueryLdapUserInfo query user info from LDAP
-func QueryLdapUserInfo(addr, dn, passwd string) (*LdapUserInfo, error) {
+func QueryLdapUserInfo(addr, dc, dn, passwd string) (*LdapUserInfo, error) {
 	log.SetFlags(log.LstdFlags)
 	log.SetPrefix("[LDAP-debug] ")
 
@@ -41,7 +41,7 @@ func QueryLdapUserInfo(addr, dn, passwd string) (*LdapUserInfo, error) {
 
 	// Search for the kubernetesToken and dn
 	searchRequest := ldap.NewSearchRequest(
-		"dc=k8s,dc=com", // need change
+		dc,
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0, false,
 		fmt.Sprintf("(&(sAMAccountName=%s))", dn),
 		[]string{"sAMAccountName", "whenCreated"},
