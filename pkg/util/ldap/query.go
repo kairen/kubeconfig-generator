@@ -64,7 +64,7 @@ func QueryLdapUserInfo(addr, dn, passwd string) (*LdapUserInfo, error) {
 	for _, entry := range sr.Entries {
 		name := entry.GetAttributeValue("sAMAccountName")
 		whenCreated := entry.GetAttributeValue("whenCreated")
-		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s-%s", name, whenCreated))
+		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s-%s", name, whenCreated)))
 		ldapUser.KubernetesToken = token
 		ldapUser.Name = name
 	}
