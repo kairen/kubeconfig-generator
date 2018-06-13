@@ -17,11 +17,12 @@ spec:
     spec:
       containers:
       - name: kg-server
-        image: inwinstack/kg-server:v0.1.0
+        image: inwinstack/kg-server:nfu
         args:
         - serve
         - --kube-apiserver-endpoint=https://192.16.35.11:6443
         - --ldap-address=192.16.35.20:389
+        - --ldap-dc=dc=k8s,dc=com
         env:
         - name: GIN_MODE
           value: release
