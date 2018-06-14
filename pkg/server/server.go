@@ -15,9 +15,10 @@ type Server struct {
 	apiURL   string
 	caPath   string
 	ldapAddr string
+	ldapDC   string
 }
 
-func NewServer(listen, apiURL, caPath, ldapAddr string) *Server {
+func NewServer(listen, apiURL, caPath, ldapAddr, ldapDC string) *Server {
 	gin.DisableConsoleColor()
 	server := &Server{
 		router:   gin.Default(),
@@ -25,6 +26,7 @@ func NewServer(listen, apiURL, caPath, ldapAddr string) *Server {
 		apiURL:   apiURL,
 		caPath:   caPath,
 		ldapAddr: ldapAddr,
+		ldapDC:   ldapDC,
 	}
 	return server
 }
@@ -40,7 +42,7 @@ func (s *Server) Serve() error {
 	s.router.POST("/login", func(c *gin.Context) {
 		var user types.User
 		if err := c.ShouldBindJSON(&user); err == nil {
-			ldapUser, qerr := ldap.QueryLdapUserInfo(s.ldapAddr, user.DN, user.Password)
+			ldapUser, qerr := ldap.QueryLdapUserInfo(s.ldapAddr, s.ldapDC, user.DN, user.Password)
 			ca, caerr := util.LoadBase64CertificateAuthority(s.caPath)
 			if ldapUser != nil && qerr == nil && caerr == nil {
 				c.JSON(http.StatusOK, types.Generator{
