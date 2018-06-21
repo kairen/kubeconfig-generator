@@ -50,7 +50,6 @@ export default {
   },
   methods: {
     copyMarkup () {
-      console.log(this.lang, this.color)
       const markup = this.$refs.markup
       markup.setAttribute('contenteditable', 'true')
       markup.focus()

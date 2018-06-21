@@ -148,17 +148,17 @@ export default {
         {
           title: 'Linux',
           lang: 'cli',
-          cmd: 'kubectl get po -n ' + this.$store.getters.username
+          cmd: 'kubectl get po -n <namespace>'
         },
         {
           title: 'Windows',
           lang: 'cli',
-          cmd: 'kubectl get po -n ' + this.$store.getters.username
+          cmd: 'kubectl get po -n <namespace>'
         },
         {
           title: 'MacOS',
           lang: 'cli',
-          cmd: 'kubectl get po -n ' + this.$store.getters.username
+          cmd: 'kubectl get po -n <namespace>'
         }
       ]
     }
