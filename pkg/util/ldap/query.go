@@ -1,12 +1,13 @@
 package ldap
 
 import (
+	"bytes"
 	"crypto/tls"
-	"encoding/base64"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"gopkg.in/ldap.v2"
 )
@@ -14,6 +15,17 @@ import (
 type LdapUserInfo struct {
 	KubernetesToken string
 	Name            string
+}
+
+func dcToDomain(dc string) string {
+  var buffer bytes.Buffer
+  for index, domainString := range strings.Split(dc, ",") {
+    if index != 0 {
+      buffer.WriteString(".")
+    }
+    buffer.WriteString(strings.Split(domainString, "=")[1])
+  }
+  return buffer.String()
 }
 
 // QueryLdapUserInfo query user info from LDAP
@@ -34,7 +46,7 @@ func QueryLdapUserInfo(addr, dc, dn, passwd string) (*LdapUserInfo, error) {
 	}
 
 	// login LDAP server by dn and password
-	if err = l.Bind(dn, passwd); err != nil {
+	if err = l.Bind(fmt.Sprintf("%s@%s", dn, dcToDomain(dc)), passwd); err != nil {
 		log.Println(err)
 		return nil, err
 	}
@@ -62,11 +74,8 @@ func QueryLdapUserInfo(addr, dc, dn, passwd string) (*LdapUserInfo, error) {
 
 	var ldapUser LdapUserInfo
 	for _, entry := range sr.Entries {
-		name := entry.GetAttributeValue("sAMAccountName")
-		whenCreated := entry.GetAttributeValue("whenCreated")
-		token := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s-%s", name, whenCreated)))
-		ldapUser.KubernetesToken = token
-		ldapUser.Name = name
+		ldapUser.KubernetesToken = fmt.Sprintf("%x", entry.GetAttributeValue("objectGUID"))
+		ldapUser.Name = entry.GetAttributeValue("cn")
 	}
 	return &ldapUser, nil
 }
