@@ -9,7 +9,7 @@ ENV PROJECT_PATH "$GOPATH/src/github.com/inwinstack/kubeconfig-generator"
 RUN apk add --no-cache git make g++ && \
   go get -u github.com/golang/dep/cmd/dep
 
-RUN git clone -b nfu-dev $PROJECT_URL $PROJECT_PATH && \
+RUN git clone -b nfu $PROJECT_URL $PROJECT_PATH && \
   cd $PROJECT_PATH && \
   dep ensure && \
   make out/kg && \
