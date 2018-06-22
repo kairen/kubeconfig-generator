@@ -55,8 +55,8 @@ func QueryLdapUserInfo(addr, dc, dn, passwd string) (*LdapUserInfo, error) {
 	searchRequest := ldap.NewSearchRequest(
 		dc,
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0, false,
-		fmt.Sprintf("(&(sAMAccountName=%s))", dn),
-		[]string{"sAMAccountName", "whenCreated"},
+		fmt.Sprintf("(&(cn=%s))", dn),
+		[]string{"cn", "objectGUID"},
 		nil,
 	)
 
