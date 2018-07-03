@@ -24,17 +24,10 @@ out/kgctl:
 	GOOS=$(GOOS) go build \
 	  -ldflags="-X $(REPOPATH)/pkg/version.version=$(VERSION)" -a -o $@ apps/cli/main.go
 
-.PHONY: build_images
-build_images: image-kg-server image-kg-ui
-
-.PHONY: image-kg-server
-image-kg-server:
-	docker build -t $(OWNER)/kg-server:$(VERSION) ./apps/server/
-
-.PHONY: image-kg-ui
-image-kg-ui:
-	docker build -t $(OWNER)/kg-ui:$(VERSION) ./apps/ui/
-
+.PHONY: build_image
+build_image:
+	docker build -t $(OWNER)/kg-server:$(VERSION) .
+	
 .PHONY: clean
 clean:
 	rm -rf out/

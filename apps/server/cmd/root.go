@@ -8,7 +8,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "kgctl",
+	Use:   "kg",
 	Short: "kg is the server for Kubeconfig Generator.",
 }
 
