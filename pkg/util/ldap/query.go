@@ -1,11 +1,13 @@
 package ldap
 
 import (
+	"bytes"
 	"crypto/tls"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"gopkg.in/ldap.v2"
 )
@@ -15,8 +17,19 @@ type LdapUserInfo struct {
 	Name            string
 }
 
+func dcToDomain(dc string) string {
+  var buffer bytes.Buffer
+  for index, domainString := range strings.Split(dc, ",") {
+    if index != 0 {
+      buffer.WriteString(".")
+    }
+    buffer.WriteString(strings.Split(domainString, "=")[1])
+  }
+  return buffer.String()
+}
+
 // QueryLdapUserInfo query user info from LDAP
-func QueryLdapUserInfo(addr, dn, passwd string) (*LdapUserInfo, error) {
+func QueryLdapUserInfo(addr, dc, userSearchBase, userNameAttribute, userTokenAttribute, dn, passwd string) (*LdapUserInfo, error) {
 	log.SetFlags(log.LstdFlags)
 	log.SetPrefix("[LDAP-debug] ")
 
@@ -33,17 +46,29 @@ func QueryLdapUserInfo(addr, dn, passwd string) (*LdapUserInfo, error) {
 	}
 
 	// login LDAP server by dn and password
-	if err = l.Bind(dn, passwd); err != nil {
+	ldap_user := dn
+	user_search_base := dn
+	user_search_filter := "(&(objectClass=*))"
+	if !strings.Contains(strings.ToLower(dn), strings.ToLower(dc)) {
+		ldap_user = fmt.Sprintf("%s@%s", dn, dcToDomain(dc))
+		user_search_filter = fmt.Sprintf("(&(userPrincipalName=%s))", ldap_user)
+		user_search_base = userSearchBase
+		if len(userSearchBase) == 0 {
+			user_search_base = dc
+		}
+	}
+
+	if err = l.Bind(ldap_user, passwd); err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
 	// Search for the kubernetesToken and dn
 	searchRequest := ldap.NewSearchRequest(
-		dn,
+		user_search_base,
 		ldap.ScopeWholeSubtree, ldap.NeverDerefAliases, 0, 0, false,
-		fmt.Sprintf("(&(objectClass=*))"),
-		[]string{"givenName", "kubernetesToken"},
+		user_search_filter,
+		[]string{userNameAttribute, userTokenAttribute},
 		nil,
 	)
 
@@ -61,8 +86,11 @@ func QueryLdapUserInfo(addr, dn, passwd string) (*LdapUserInfo, error) {
 
 	var ldapUser LdapUserInfo
 	for _, entry := range sr.Entries {
-		ldapUser.KubernetesToken = entry.GetAttributeValue("kubernetesToken")
-		ldapUser.Name = entry.GetAttributeValue("givenName")
+		ldapUser.KubernetesToken = entry.GetAttributeValue(userTokenAttribute)
+		if userTokenAttribute == "objectGUID" {
+			ldapUser.KubernetesToken = fmt.Sprintf("%x", entry.GetAttributeValue(userTokenAttribute))
+		}
+		ldapUser.Name = entry.GetAttributeValue(userNameAttribute)
 	}
 	return &ldapUser, nil
 }

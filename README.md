@@ -29,6 +29,10 @@ spec:
         - serve
         - --kube-apiserver-endpoint=https://192.16.35.11:6443
         - --ldap-address=192.16.35.20:389
+        - --ldap-dc=dc=k8s,dc=com
+        - --user-search-base=ou=People,dc=k8s,dc=com
+        - --user-name-attribute=givenName
+        - --user-token-arttribute=kubernetesToken
 ```
 
 And then apply to Kubernetes cluster:
