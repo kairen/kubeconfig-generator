@@ -49,7 +49,7 @@ func QueryLdapUserInfo(addr, dc, userSearchBase, userNameAttribute, userTokenAtt
 	ldap_user := dn
 	user_search_base := dn
 	user_search_filter := "(&(objectClass=*))"
-  if !strings.Contains(strings.ToLower(dn), strings.ToLower(dc)) {
+	if !strings.Contains(strings.ToLower(dn), strings.ToLower(dc)) {
 		ldap_user = fmt.Sprintf("%s@%s", dn, dcToDomain(dc))
 		user_search_filter = fmt.Sprintf("(&(userPrincipalName=%s))", ldap_user)
 		user_search_base = userSearchBase
