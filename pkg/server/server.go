@@ -10,21 +10,29 @@ import (
 )
 
 type Server struct {
-	router   *gin.Engine
-	listen   string
-	apiURL   string
-	caPath   string
-	ldapAddr string
+	router             *gin.Engine
+	listen             string
+	apiURL             string
+	caPath             string
+	ldapAddr           string
+	ldapDC             string
+	userSearchBase     string
+	userNameAttribute  string
+	userTokenAttribute string
 }
 
-func NewServer(listen, apiURL, caPath, ldapAddr string) *Server {
+func NewServer(listen, apiURL, caPath, ldapAddr, ldapDC, userSearchBase, userNameAttribute, userTokenAttribute string) *Server {
 	gin.DisableConsoleColor()
 	server := &Server{
-		router:   gin.Default(),
-		listen:   listen,
-		apiURL:   apiURL,
-		caPath:   caPath,
-		ldapAddr: ldapAddr,
+		router:             gin.Default(),
+		listen:             listen,
+		apiURL:             apiURL,
+		caPath:             caPath,
+		ldapAddr:           ldapAddr,
+		ldapDC:             ldapDC,
+		userSearchBase:     userSearchBase,
+		userNameAttribute:  userNameAttribute,
+		userTokenAttribute: userTokenAttribute,
 	}
 	return server
 }
@@ -40,7 +48,7 @@ func (s *Server) Serve() error {
 	s.router.POST("/login", func(c *gin.Context) {
 		var user types.User
 		if err := c.ShouldBindJSON(&user); err == nil {
-			ldapUser, qerr := ldap.QueryLdapUserInfo(s.ldapAddr, user.DN, user.Password)
+			ldapUser, qerr := ldap.QueryLdapUserInfo(s.ldapAddr, s.ldapDC, s.userSearchBase, s.userNameAttribute, s.userTokenAttribute, user.DN, user.Password)
 			ca, caerr := util.LoadBase64CertificateAuthority(s.caPath)
 			if ldapUser != nil && qerr == nil && caerr == nil {
 				c.JSON(http.StatusOK, types.Generator{

@@ -22,6 +22,9 @@ spec:
         - serve
         - --kube-apiserver-endpoint=https://192.16.35.11:6443
         - --ldap-address=192.16.35.20:389
+        - --user-search-base=cn=ou=People,dc=k8s,dc=com
+        - --user-name-attribute=givenName
+        - --user-token-arttribute=kubernetesToken
         env:
         - name: GIN_MODE
           value: release
