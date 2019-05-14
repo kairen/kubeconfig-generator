@@ -16,8 +16,8 @@ spec:
         app: kubeconfig-generator
     spec:
       containers:
-      - name: kg-server
-        image: inwinstack/kg-server:v0.1.0
+      - name: kubeconfig-generator
+        image: kubedev/kubeconfig-generator:v0.1.0
         args:
         - serve
         - --kube-apiserver-endpoint=https://192.16.35.11:6443
@@ -53,8 +53,8 @@ spec:
           timeoutSeconds: 20
         ports:
         - containerPort: 8080
-      - name: kg-ui
-        image: inwinstack/kg-ui:v0.1.0
+      - name: kubeconfig-generator-ui
+        image: kubedev/kubeconfig-generator-ui:v0.1.0
         resources:
           requests:
             cpu: 100m

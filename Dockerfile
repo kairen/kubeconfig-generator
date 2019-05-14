@@ -1,12 +1,8 @@
-# Building stage
-FROM golang:1.10-alpine AS build-env
-LABEL maintainer="Kyle Bai <kyle.b@inwinstack.com>"
+FROM kairen/golang:1.11-alpine AS build-env
+LABEL maintainer="Kyle Bai <k2r2.bai@gmail.com>"
 
 ENV GOPATH "/go"
-ENV PROJECT_PATH "$GOPATH/src/github.com/inwinstack/kubeconfig-generator"
-
-RUN apk add --no-cache git make g++ && \
-  go get -u github.com/golang/dep/cmd/dep
+ENV PROJECT_PATH "$GOPATH/src/github.com/kubedev/kubeconfig-generator"
 
 COPY . $PROJECT_PATH
 RUN cd $PROJECT_PATH && \

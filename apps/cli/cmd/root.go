@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/inwinstack/kubeconfig-generator/pkg/client"
+	"github.com/kubedev/kubeconfig-generator/pkg/client"
 	"github.com/spf13/cobra"
 )
 

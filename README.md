@@ -1,30 +1,30 @@
-[![Build Status](https://travis-ci.org/inwinstack/kubeconfig-generator.svg?branch=master)](https://travis-ci.org/inwinstack/kubeconfig-generator) [![Docker Build Status](https://img.shields.io/docker/build/inwinstack/kg-server.svg)](https://hub.docker.com/r/inwinstack/kg-server/)
+[![Build Status](https://travis-ci.org/kubedev/kubeconfig-generator.svg?branch=master)](https://travis-ci.org/kubedev/kubeconfig-generator) [![Docker Pulls](https://img.shields.io/docker/pulls/kubedev/kubeconfig-generator.svg)](https://hub.docker.com/r/kubedev/kubeconfig-generator/)
 
 # Kubeconfig Generator
-Kubeconfig Generator is a tool to generate kubeconfig for LDAP, Keystone, ..., etc webhook.
+Kubeconfig Generator is a tool to generate kubeconfig for the auth webhook.
 
 Now support webhook as below:
 * [x] LDAP Webhook.
 * [ ] Keystone Webhook.
 
 ## Building from Source
-Clone into your go path under `$GOPATH/src/github.com/inwinstack`:
+Clone into your go path under `$GOPATH/src`:
 ```sh
-$ git clone https://github.com/inwinstack/kubeconfig-generator.git $GOPATH/src/github.com/inwinstack/kubeconfig-generator.git
-$ cd $GOPATH/src/github.com/inwinstack/kubeconfig-generator.git
+$ git clone https://github.com/kubedev/kubeconfig-generator.git $GOPATH/src/github.com/kubedev/kubeconfig-generator.git
+$ cd $GOPATH/src/github.com/kubedev/kubeconfig-generator.git
 $ make
 ```
 
 ## Quick Start
-In this first, modified the `deploy/kg-deployment.yml` file to match our LDAP and Kubernetes API server endpoint:
+In this first, modified the `deploy/deployment.yml` file to match our LDAP and Kubernetes API server endpoint:
 ```yml
 # container args
 spec:
   template:
     spec:
       containers:
-      - name: kg-server
-        image: inwinstack/kg-server:v0.1.0
+      - name: kubeconfig-generator
+        image: kubedev/kubeconfig-generator:v0.1.0
         args:
         - serve
         - --kube-apiserver-endpoint=https://192.16.35.11:6443

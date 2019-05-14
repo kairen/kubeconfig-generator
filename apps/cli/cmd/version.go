@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/inwinstack/kubeconfig-generator/pkg/version"
+	"github.com/kubedev/kubeconfig-generator/pkg/version"
 	"github.com/spf13/cobra"
 )
 

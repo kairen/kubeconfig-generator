@@ -6,7 +6,7 @@ VERSION ?= v$(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_BUILD)
 GOOS ?= $(shell go env GOOS)
 
 ORG := github.com
-OWNER := inwinstack
+OWNER := kubedev
 REPOPATH ?= $(ORG)/$(OWNER)/kubeconfig-generator
 
 $(shell mkdir -p ./out)
@@ -26,7 +26,7 @@ out/kgctl:
 
 .PHONY: build_image
 build_image:
-	docker build -t $(OWNER)/kg-server:$(VERSION) .
+	docker build -t $(OWNER)/kubeconfig-generator:$(VERSION) .
 	
 .PHONY: clean
 clean:

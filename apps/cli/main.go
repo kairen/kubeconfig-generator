@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/inwinstack/kubeconfig-generator/apps/cli/cmd"
+	"github.com/kubedev/kubeconfig-generator/apps/cli/cmd"
 )
 
 func main() {
