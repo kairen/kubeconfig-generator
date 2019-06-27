@@ -1,17 +1,13 @@
-[![Build Status](https://travis-ci.org/kubedev/kubeconfig-generator.svg?branch=master)](https://travis-ci.org/kubedev/kubeconfig-generator) [![Docker Pulls](https://img.shields.io/docker/pulls/kubedev/kubeconfig-generator.svg)](https://hub.docker.com/r/kubedev/kubeconfig-generator/)
+[![Build Status](https://travis-ci.org/kairen/kubeconfig-generator.svg?branch=master)](https://travis-ci.org/kairen/kubeconfig-generator) [![Docker Pulls](https://img.shields.io/docker/pulls/kairen/kubeconfig-generator.svg)](https://hub.docker.com/r/kairen/kubeconfig-generator/)
 
-# Kubeconfig Generator
-Kubeconfig Generator is a tool to generate kubeconfig for the auth webhook.
-
-Now support webhook as below:
-* [x] LDAP Webhook.
-* [ ] Keystone Webhook.
+# LDAP Kubeconfig Generator
+Kubeconfig Generator is a tool to generate kubeconfig for Kubernetes auth integration with LDAP.
 
 ## Building from Source
 Clone into your go path under `$GOPATH/src`:
 ```sh
-$ git clone https://github.com/kubedev/kubeconfig-generator.git $GOPATH/src/github.com/kubedev/kubeconfig-generator.git
-$ cd $GOPATH/src/github.com/kubedev/kubeconfig-generator.git
+$ git clone https://github.com/kairen/kubeconfig-generator.git $GOPATH/src/github.com/kairen/kubeconfig-generator.git
+$ cd $GOPATH/src/github.com/kairen/kubeconfig-generator.git
 $ make
 ```
 
@@ -52,6 +48,6 @@ Generate the Kubernetes config to `test.conf`.
 $ export KUBECONFIG=test.conf
 $ kubectl -n user1 get po
 ```
-> Or access `Web-based UI`.
+> Or access [Web-based UI](https://github.com/ellis-wu/kubeconfig-generator-ui).
 
 ![web-ui](snapshots/home.png)

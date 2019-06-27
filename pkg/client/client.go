@@ -10,8 +10,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/kubedev/kubeconfig-generator/pkg/types"
-	"github.com/kubedev/kubeconfig-generator/pkg/util/kubeconfig"
+	"github.com/kairen/kubeconfig-generator/pkg/types"
+	"github.com/kairen/kubeconfig-generator/pkg/util/kubeconfig"
 )
 
 const (

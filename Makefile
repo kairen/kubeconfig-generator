@@ -6,7 +6,7 @@ VERSION ?= v$(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_BUILD)
 GOOS ?= $(shell go env GOOS)
 
 ORG := github.com
-OWNER := kubedev
+OWNER := kairen
 REPOPATH ?= $(ORG)/$(OWNER)/kubeconfig-generator
 
 $(shell mkdir -p ./out)
@@ -16,12 +16,12 @@ build: out/kg out/kgctl
 
 .PHONY: kg
 out/kg:
-	GOOS=$(GOOS) go build \
-	  -ldflags="-X $(REPOPATH)/pkg/version.version=$(VERSION)" -a -o $@ apps/server/main.go
+	CGO_ENABLED=0 GOOS=$(GOOS) go build \
+	  -ldflags="-s -w -X $(REPOPATH)/pkg/version.version=$(VERSION)" -a -o $@ apps/server/main.go
 
 .PHONY: kgctl
 out/kgctl:
-	GOOS=$(GOOS) go build \
+	CGO_ENABLED=0 GOOS=$(GOOS) go build \
 	  -ldflags="-X $(REPOPATH)/pkg/version.version=$(VERSION)" -a -o $@ apps/cli/main.go
 
 .PHONY: build_image

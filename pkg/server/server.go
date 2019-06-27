@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kubedev/kubeconfig-generator/pkg/types"
-	"github.com/kubedev/kubeconfig-generator/pkg/util"
-	"github.com/kubedev/kubeconfig-generator/pkg/util/ldap"
+	"github.com/kairen/kubeconfig-generator/pkg/types"
+	"github.com/kairen/kubeconfig-generator/pkg/util"
+	"github.com/kairen/kubeconfig-generator/pkg/util/ldap"
 )
 
 type Server struct {

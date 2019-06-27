@@ -2,3 +2,4 @@
 *.crt
 *.conf
 out/
+vendor/
