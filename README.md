@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: kubeconfig-generator
-        image: kubedev/kubeconfig-generator:v0.1.0
+        image: kairen/kubeconfig-generator:v0.1.0
         args:
         - serve
         - --kube-apiserver-endpoint=https://192.16.35.11:6443
